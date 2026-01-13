@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
     alias(libs.plugins.qodana) // Gradle Qodana Plugin
     alias(libs.plugins.kover) // Gradle Kover Plugin
+    antlr // ANTLR Plugin
 }
 
 group = providers.gradleProperty("pluginGroup").get()
@@ -31,6 +32,10 @@ repositories {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/version_catalogs.html
 dependencies {
+    antlr("org.antlr:antlr4:${libs.versions.antlr.get()}")
+    implementation(libs.antlr.runtime)
+    implementation(libs.antlr.intellij.adaptor)
+
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
 
@@ -127,12 +132,34 @@ kover {
 }
 
 tasks {
+    generateGrammarSource {
+        maxHeapSize = "64m"
+        arguments = arguments + listOf("-visitor", "-package", "com.ohaddahan.circom.parser")
+        outputDirectory = file("${layout.buildDirectory.get()}/generated-src/antlr/main/com/ohaddahan/circom/parser")
+    }
+
+    compileKotlin {
+        dependsOn(generateGrammarSource)
+    }
+
+    compileJava {
+        dependsOn(generateGrammarSource)
+    }
+
     wrapper {
         gradleVersion = providers.gradleProperty("gradleVersion").get()
     }
 
     publishPlugin {
         dependsOn(patchChangelog)
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("${layout.buildDirectory.get()}/generated-src/antlr/main")
+        }
     }
 }
 

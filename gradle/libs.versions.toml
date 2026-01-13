@@ -2,6 +2,8 @@
 # libraries
 junit = "4.13.2"
 opentest4j = "1.3.0"
+antlr = "4.13.1"
+antlrIntellijAdaptor = "0.1"
 
 # plugins
 changelog = "2.5.0"
@@ -13,6 +15,8 @@ qodana = "2025.2.2"
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 opentest4j = { group = "org.opentest4j", name = "opentest4j", version.ref = "opentest4j" }
+antlr-runtime = { group = "org.antlr", name = "antlr4-runtime", version.ref = "antlr" }
+antlr-intellij-adaptor = { group = "org.antlr", name = "antlr4-intellij-adaptor", version.ref = "antlrIntellijAdaptor" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

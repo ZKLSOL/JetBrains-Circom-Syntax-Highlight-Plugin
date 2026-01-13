@@ -1,15 +1,39 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.ohaddahan.jetbrainscircomsyntaxhighlightplugin</id>
-    <name>ohaddahan-Circom-Syntax-Highlight-Plugin</name>
-    <vendor>ohaddahan</vendor>
+    <id>com.ohaddahan.circom</id>
+    <name>Circom Language Support</name>
+    <vendor url="https://github.com/ohaddahan">ohaddahan</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.ohaddahan.jetbrainscircomsyntaxhighlightplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.ohaddahan.jetbrainscircomsyntaxhighlightplugin.startup.MyProjectActivity" />
+        <!-- File Type -->
+        <fileType name="Circom file"
+                  language="Circom"
+                  implementationClass="com.ohaddahan.circom.lang.CircomFileType"
+                  extensions="circom"
+                  fieldName="INSTANCE"/>
+
+        <!-- Syntax Highlighter -->
+        <lang.syntaxHighlighterFactory language="Circom"
+                                       implementationClass="com.ohaddahan.circom.lang.CircomSyntaxHighlighterFactory"/>
+
+        <!-- Color Schemes -->
+        <additionalTextAttributes scheme="Default" file="colorSchemes/CircomDefault.xml"/>
+        <additionalTextAttributes scheme="Dark" file="colorSchemes/CircomDefault.xml"/>
+        <additionalTextAttributes scheme="Darcula" file="colorSchemes/CircomDefault.xml"/>
+
+        <!-- Bracket Matching -->
+        <lang.braceMatcher language="Circom"
+                           implementationClass="com.ohaddahan.circom.ide.CircomBraceMatcher"/>
+
+        <!-- Code Folding -->
+        <lang.foldingBuilder language="Circom"
+                             implementationClass="com.ohaddahan.circom.ide.CircomFoldingBuilder"/>
+
+        <!-- Commenting -->
+        <lang.commenter language="Circom"
+                        implementationClass="com.ohaddahan.circom.ide.CircomCommenter"/>
     </extensions>
 </idea-plugin>

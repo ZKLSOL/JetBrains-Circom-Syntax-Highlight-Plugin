@@ -1,52 +1,119 @@
-# JetBrains-Circom-Syntax-Highlight-Plugin
+# Circom Language Support
 
-![Build](https://github.com/ohaddahan/JetBrains-Circom-Syntax-Highlight-Plugin/workflows/Build/badge.svg)
+![Build](https://github.com/ohaddahan/circom-language-support/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-- [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
+A JetBrains IDE plugin providing syntax highlighting and IDE features for [Circom](https://docs.circom.io/), the domain-specific language for writing arithmetic circuits used in zero-knowledge proofs.
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+Circom Language Support provides syntax highlighting and IDE features for Circom, the domain-specific language for writing arithmetic circuits used in zero-knowledge proofs.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+**Features:**
+- Full syntax highlighting for Circom 2.x
+- Special highlighting for constraint operators (===, <==, ==>, <--, -->)
+- Signal type highlighting (input, output)
+- Template modifier highlighting (parallel, custom, bus)
+- Bracket matching for (), [], {}
+- Code folding for templates, functions, and blocks
+- Line comment toggling (Cmd+/ or Ctrl+/)
+- Customizable colors via IDE settings
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+Supports all JetBrains IDEs: IntelliJ IDEA, WebStorm, PyCharm, RustRover, and more.
 <!-- Plugin description end -->
+
+## Supported IDEs
+
+- IntelliJ IDEA (Community & Ultimate)
+- WebStorm
+- PyCharm
+- RustRover
+- CLion
+- GoLand
+- PhpStorm
+- And all other JetBrains IDEs (2024.3+)
 
 ## Installation
 
-- Using the IDE built-in plugin system:
+### From JetBrains Marketplace (Recommended)
 
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "JetBrains-Circom-Syntax-Highlight-Plugin"</kbd> >
-  <kbd>Install</kbd>
+1. Open your JetBrains IDE
+2. Go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd>
+3. Search for "Circom Language Support"
+4. Click <kbd>Install</kbd>
 
-- Using JetBrains Marketplace:
+### Manual Installation
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+1. Download the latest release from [GitHub Releases](https://github.com/ohaddahan/circom-language-support/releases/latest)
+2. Open your JetBrains IDE
+3. Go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+4. Select the downloaded ZIP file
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+## Syntax Highlighting
 
-- Manually:
+The plugin provides specialized highlighting for Circom-specific constructs:
 
-  Download the [latest release](https://github.com/ohaddahan/JetBrains-Circom-Syntax-Highlight-Plugin/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+| Element | Color | Example |
+|---------|-------|---------|
+| Keywords | Default keyword color | `template`, `signal`, `component`, `var` |
+| Signal Types | Blue-violet (#879DE0) | `input`, `output` |
+| Constraint Operators | Teal (#4EC9B0) | `===`, `<==`, `==>`, `<--`, `-->` |
+| Modifiers | Yellow (#BBB529) | `parallel`, `custom`, `bus` |
+| Comments | Default comment color | `//`, `/* */` |
+| Strings | Default string color | `"include.circom"` |
+| Numbers | Default number color | `123`, `0x1A2B` |
 
+### Customizing Colors
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+You can customize all colors via <kbd>Settings</kbd> > <kbd>Editor</kbd> > <kbd>Color Scheme</kbd> > <kbd>Circom</kbd>
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+## Building from Source
+
+### Prerequisites
+
+- JDK 21 or higher
+- Gradle 8.11+ (included via wrapper)
+
+### Build Commands
+
+```bash
+# Clone the repository
+git clone https://github.com/ohaddahan/circom-language-support.git
+cd circom-language-support
+
+# Build the plugin
+./gradlew buildPlugin
+
+# The plugin ZIP will be created at:
+# build/distributions/circom-language-support-<version>.zip
+```
+
+### Testing Locally
+
+```bash
+# Run the plugin in a sandbox IDE instance
+./gradlew runIde
+
+# Run tests
+./gradlew test
+
+# Clean build artifacts
+./gradlew clean
+```
+
+### Development
+
+For implementation details, see [DEV.md](DEV.md).
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Acknowledgments
+
+- Based on the [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+- Grammar inspired by the [intellij-circom](https://github.com/poma/intellij-circom) project
