@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.ohaddahan.circom</id>
+    <id>cash.turbine.circom</id>
     <name>Circom Language Support</name>
-    <vendor url="https://github.com/ohaddahan">ohaddahan</vendor>
+    <vendor url="https://turbine.cash">Turbine</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
@@ -11,13 +11,13 @@
         <!-- File Type -->
         <fileType name="Circom file"
                   language="Circom"
-                  implementationClass="com.ohaddahan.circom.lang.CircomFileType"
+                  implementationClass="cash.turbine.circom.lang.CircomFileType"
                   extensions="circom"
                   fieldName="INSTANCE"/>
 
         <!-- Syntax Highlighter -->
         <lang.syntaxHighlighterFactory language="Circom"
-                                       implementationClass="com.ohaddahan.circom.lang.CircomSyntaxHighlighterFactory"/>
+                                       implementationClass="cash.turbine.circom.lang.CircomSyntaxHighlighterFactory"/>
 
         <!-- Color Schemes -->
         <additionalTextAttributes scheme="Default" file="colorSchemes/CircomDefault.xml"/>
@@ -26,41 +26,41 @@
 
         <!-- Bracket Matching -->
         <lang.braceMatcher language="Circom"
-                           implementationClass="com.ohaddahan.circom.ide.CircomBraceMatcher"/>
+                           implementationClass="cash.turbine.circom.ide.CircomBraceMatcher"/>
 
         <!-- Code Folding -->
         <lang.foldingBuilder language="Circom"
-                             implementationClass="com.ohaddahan.circom.ide.CircomFoldingBuilder"/>
+                             implementationClass="cash.turbine.circom.ide.CircomFoldingBuilder"/>
 
         <!-- Commenting -->
         <lang.commenter language="Circom"
-                        implementationClass="com.ohaddahan.circom.ide.CircomCommenter"/>
+                        implementationClass="cash.turbine.circom.ide.CircomCommenter"/>
 
         <!-- Parser Definition -->
         <lang.parserDefinition language="Circom"
-                               implementationClass="com.ohaddahan.circom.psi.CircomParserDefinition"/>
+                               implementationClass="cash.turbine.circom.psi.CircomParserDefinition"/>
 
         <!-- Find Usages -->
         <lang.findUsagesProvider language="Circom"
-                                 implementationClass="com.ohaddahan.circom.ide.CircomFindUsagesProvider"/>
+                                 implementationClass="cash.turbine.circom.ide.CircomFindUsagesProvider"/>
 
         <!-- Go to Symbol -->
         <gotoSymbolContributor
-                implementation="com.ohaddahan.circom.ide.CircomChooseByNameContributor"/>
+                implementation="cash.turbine.circom.ide.CircomChooseByNameContributor"/>
 
         <!-- Structure View -->
         <lang.psiStructureViewFactory language="Circom"
-                                      implementationClass="com.ohaddahan.circom.ide.CircomStructureViewFactory"/>
+                                      implementationClass="cash.turbine.circom.ide.CircomStructureViewFactory"/>
 
         <!-- References -->
         <psi.referenceContributor
-                                  implementation="com.ohaddahan.circom.reference.CircomReferenceContributor"/>
+                                  implementation="cash.turbine.circom.reference.CircomReferenceContributor"/>
 
         <!-- Refactoring -->
         <lang.refactoringSupport language="Circom"
-                                 implementationClass="com.ohaddahan.circom.refactoring.CircomRefactoringSupportProvider"/>
+                                 implementationClass="cash.turbine.circom.refactoring.CircomRefactoringSupportProvider"/>
 
         <lang.namesValidator language="Circom"
-                             implementationClass="com.ohaddahan.circom.refactoring.CircomNamesValidator"/>
+                             implementationClass="cash.turbine.circom.refactoring.CircomNamesValidator"/>
     </extensions>
 </idea-plugin>

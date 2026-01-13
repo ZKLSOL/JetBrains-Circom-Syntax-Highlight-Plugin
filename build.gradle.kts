@@ -134,8 +134,8 @@ kover {
 tasks {
     generateGrammarSource {
         maxHeapSize = "64m"
-        arguments = arguments + listOf("-visitor", "-package", "com.ohaddahan.circom.parser")
-        outputDirectory = file("${layout.buildDirectory.get()}/generated-src/antlr/main/com/ohaddahan/circom/parser")
+        arguments = arguments + listOf("-visitor", "-package", "cash.turbine.circom.parser")
+        outputDirectory = file("${layout.buildDirectory.get()}/generated-src/antlr/main/cash/turbine/circom/parser")
     }
 
     compileKotlin {

@@ -35,7 +35,7 @@ src/main/
 ├── antlr/                          # ANTLR grammar files
 │   ├── CircomLexer.g4              # Lexer grammar
 │   └── CircomParser.g4             # Parser grammar
-├── kotlin/com/ohaddahan/circom/
+├── kotlin/cash/turbine/circom/
 │   ├── lang/                       # Language definitions
 │   │   ├── CircomLanguage.kt       # Language & file type
 │   │   ├── CircomFileRoot.kt       # PSI root element
@@ -107,7 +107,7 @@ The grammar defines all Circom 2.x language constructs:
 
 ### 2. Language Foundation
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/lang/CircomLanguage.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/lang/CircomLanguage.kt`
 
 Defines the language and file type:
 
@@ -125,7 +125,7 @@ object CircomFileType : LanguageFileType(CircomLanguage) {
 
 ### 3. Token Types
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/lang/CircomTokenTypes.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/lang/CircomTokenTypes.kt`
 
 Categorizes tokens for syntax highlighting:
 
@@ -141,7 +141,7 @@ Categorizes tokens for syntax highlighting:
 
 ### 4. Syntax Highlighting
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/lang/CircomSyntaxHighlighter.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/lang/CircomSyntaxHighlighter.kt`
 
 Maps token types to text attributes:
 
@@ -167,7 +167,7 @@ override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKe
 
 ### 5. ANTLR-IntelliJ Adapters
 
-**Files:** `src/main/kotlin/com/ohaddahan/circom/adaptors/`
+**Files:** `src/main/kotlin/cash/turbine/circom/adaptors/`
 
 These classes bridge ANTLR4 to IntelliJ's infrastructure:
 
@@ -177,7 +177,7 @@ These classes bridge ANTLR4 to IntelliJ's infrastructure:
 
 ### 6. Bracket Matching
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomBraceMatcher.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/ide/CircomBraceMatcher.kt`
 
 Defines matching bracket pairs:
 
@@ -191,7 +191,7 @@ BRACE_PAIRS = arrayOf(
 
 ### 7. Code Folding
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomFoldingBuilder.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/ide/CircomFoldingBuilder.kt`
 
 Foldable regions:
 - Curly brace blocks `{ ... }` (templates, functions, if/else, loops)
@@ -201,7 +201,7 @@ Implementation walks the PSI tree finding `LC` (left curly) tokens and their mat
 
 ### 8. Line Commenting
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomCommenter.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/ide/CircomCommenter.kt`
 
 ```kotlin
 override fun getLineCommentPrefix(): String = "//"
@@ -235,7 +235,7 @@ Registers all extension points:
 
 ### 10. PSI Element Types
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/psi/CircomElementTypes.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/psi/CircomElementTypes.kt`
 
 Maps ANTLR parser rules to IntelliJ element types:
 
@@ -253,7 +253,7 @@ object CircomElementTypes {
 
 ### 11. Parser Definition
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/psi/CircomParserDefinition.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/psi/CircomParserDefinition.kt`
 
 Creates PSI elements from AST nodes:
 
@@ -289,7 +289,7 @@ All named elements (templates, functions, signals, variables, components) extend
 
 ### 13. Reference System
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/reference/CircomReference.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/reference/CircomReference.kt`
 
 Resolves identifier references to their declarations:
 
@@ -312,7 +312,7 @@ class CircomReference(element: PsiElement, textRange: TextRange) :
 
 ### 14. Project-Wide Symbol Index
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/stubs/CircomNameIndex.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/stubs/CircomNameIndex.kt`
 
 Uses `FileTypeIndex` to find all Circom files and extract symbols:
 
@@ -327,7 +327,7 @@ object CircomNameIndex {
 
 ### 15. Find Usages Provider
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomFindUsagesProvider.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/ide/CircomFindUsagesProvider.kt`
 
 Enables Find Usages (Alt+F7):
 
@@ -350,7 +350,7 @@ class CircomFindUsagesProvider : FindUsagesProvider {
 
 ### 16. Go to Symbol
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomChooseByNameContributor.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/ide/CircomChooseByNameContributor.kt`
 
 Enables Go to Symbol (Cmd+O / Ctrl+N):
 
@@ -364,7 +364,7 @@ class CircomChooseByNameContributor : ChooseByNameContributor {
 
 ### 17. Structure View
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomStructureViewFactory.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/ide/CircomStructureViewFactory.kt`
 
 Displays file structure in the Structure panel:
 
@@ -382,7 +382,7 @@ File.circom
 
 ### 18. Refactoring Support
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/refactoring/CircomRefactoringSupportProvider.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/refactoring/CircomRefactoringSupportProvider.kt`
 
 Enables in-place rename refactoring (Shift+F6):
 
@@ -393,7 +393,7 @@ class CircomRefactoringSupportProvider : RefactoringSupportProvider() {
 }
 ```
 
-**File:** `src/main/kotlin/com/ohaddahan/circom/refactoring/CircomNamesValidator.kt`
+**File:** `src/main/kotlin/cash/turbine/circom/refactoring/CircomNamesValidator.kt`
 
 Validates Circom identifiers:
 - Must start with letter, `_`, or `$`
@@ -413,7 +413,7 @@ Validates Circom identifiers:
 ```kotlin
 tasks {
     generateGrammarSource {
-        arguments = arguments + listOf("-visitor", "-package", "com.ohaddahan.circom.parser")
+        arguments = arguments + listOf("-visitor", "-package", "cash.turbine.circom.parser")
         outputDirectory = file("${layout.buildDirectory.get()}/generated-src/antlr/main/...")
     }
     compileKotlin { dependsOn(generateGrammarSource) }
@@ -522,8 +522,78 @@ Ensure ANTLR sources are generated before compilation:
 
 Check `build/idea-sandbox/system/log/idea.log` for errors.
 
+## Scripts
+
+The `scripts/` directory contains helper scripts:
+
+| Script | Description |
+|--------|-------------|
+| `./scripts/build.sh` | Build the plugin ZIP |
+| `./scripts/clean.sh` | Clean build artifacts |
+| `./scripts/deep-clean.sh` | Remove all caches (`.gradle`, `.intellijPlatform`, etc.) |
+| `./scripts/test.sh` | Run tests |
+| `./scripts/run.sh` | Launch sandbox IDE with the plugin |
+| `./scripts/publish.sh` | Publish to JetBrains Marketplace |
+
+## Publishing to JetBrains Marketplace
+
+### Prerequisites
+
+1. **JetBrains Marketplace Account**
+   - Create an account at [plugins.jetbrains.com](https://plugins.jetbrains.com)
+   - Go to [My Tokens](https://plugins.jetbrains.com/author/me/tokens) and generate a token
+
+2. **Plugin Signing (Optional but Recommended)**
+   - Generate a certificate for signing: [Plugin Signing Guide](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html)
+   - You'll need: certificate chain, private key, and key password
+
+### Environment Variables
+
+Set these before publishing:
+
+```bash
+# Required
+export PUBLISH_TOKEN='your-jetbrains-marketplace-token'
+
+# Optional (for signed plugins)
+export CERTIFICATE_CHAIN="$(cat /path/to/chain.crt)"
+export PRIVATE_KEY="$(cat /path/to/private.pem)"
+export PRIVATE_KEY_PASSWORD='your-key-password'
+```
+
+### Publishing
+
+```bash
+# Using the script
+./scripts/publish.sh
+
+# Or manually
+./gradlew publishPlugin
+```
+
+### First-Time Publishing
+
+For the first upload, you may need to manually upload via the web interface:
+1. Build: `./scripts/build.sh`
+2. Go to [Upload Plugin](https://plugins.jetbrains.com/plugin/add)
+3. Upload `build/distributions/circom-language-support-*.zip`
+
+Subsequent updates can use `./scripts/publish.sh`.
+
+### Versioning
+
+Update the version in `gradle.properties`:
+
+```properties
+pluginVersion = 0.3.0
+```
+
+Also update `CHANGELOG.md` before publishing.
+
 ## Resources
 
 - [IntelliJ Platform SDK Documentation](https://plugins.jetbrains.com/docs/intellij/)
 - [ANTLR4 Documentation](https://www.antlr.org/documentation.html)
 - [Circom Documentation](https://docs.circom.io/)
+- [Plugin Signing Guide](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html)
+- [Publishing Plugins](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html)
