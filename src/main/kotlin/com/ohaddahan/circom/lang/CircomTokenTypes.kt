@@ -9,12 +9,18 @@ import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory
 object CircomTokenTypes {
     val BAD_TOKEN_TYPE: IElementType = IElementType("BAD_TOKEN", CircomLanguage)
 
+    @Volatile
+    private var initialized = false
+
     init {
         initializeElementTypeFactory()
     }
 
     @JvmStatic
+    @Synchronized
     fun initializeElementTypeFactory() {
+        if (initialized) return
+        initialized = true
         PSIElementTypeFactory.defineLanguageIElementTypes(
             CircomLanguage,
             CircomLexer.tokenNames,
@@ -97,6 +103,11 @@ object CircomTokenTypes {
     val SEMICOLON: TokenSet = PSIElementTypeFactory.createTokenSet(
         CircomLanguage,
         CircomLexer.SEMICOLON
+    )
+
+    val IDENTIFIERS: TokenSet = PSIElementTypeFactory.createTokenSet(
+        CircomLanguage,
+        CircomLexer.ID
     )
 
     val SQUARE_BRACKET: TokenSet = PSIElementTypeFactory.createTokenSet(

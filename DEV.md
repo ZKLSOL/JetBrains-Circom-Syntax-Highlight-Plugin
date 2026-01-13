@@ -46,11 +46,36 @@ src/main/
 │   │   ├── CircomLexerAdaptor.kt   # Lexer adapter
 │   │   ├── CircomLexerState.kt     # Lexer state
 │   │   └── CircomGrammarParser.kt  # Parser adapter
+│   ├── psi/                        # PSI element classes
+│   │   ├── CircomElementTypes.kt   # Element type definitions
+│   │   ├── CircomParserDefinition.kt
+│   │   ├── CircomPsiFile.kt        # Enhanced file PSI
+│   │   ├── CircomNamedElement.kt   # Named element interface
+│   │   └── impl/                   # PSI implementations
+│   │       ├── CircomNamedElementImpl.kt
+│   │       ├── CircomTemplateDefinitionImpl.kt
+│   │       ├── CircomFunctionDefinitionImpl.kt
+│   │       ├── CircomSignalDeclarationImpl.kt
+│   │       ├── CircomVariableDeclarationImpl.kt
+│   │       ├── CircomComponentDeclarationImpl.kt
+│   │       ├── CircomIncludeStatementImpl.kt
+│   │       └── CircomElementFactory.kt
+│   ├── stubs/                      # Stub indices
+│   │   └── CircomNameIndex.kt      # Project-wide symbol lookup
+│   ├── reference/                  # Reference system
+│   │   ├── CircomReference.kt      # Reference resolution
+│   │   └── CircomReferenceContributor.kt
+│   ├── refactoring/                # Refactoring support
+│   │   ├── CircomRefactoringSupportProvider.kt
+│   │   └── CircomNamesValidator.kt
 │   └── ide/                        # IDE features
 │       ├── CircomIcons.kt          # File icons
 │       ├── CircomBraceMatcher.kt   # Bracket matching
 │       ├── CircomFoldingBuilder.kt # Code folding
-│       └── CircomCommenter.kt      # Line comments
+│       ├── CircomCommenter.kt      # Line comments
+│       ├── CircomFindUsagesProvider.kt
+│       ├── CircomChooseByNameContributor.kt
+│       └── CircomStructureViewFactory.kt
 └── resources/
     ├── META-INF/plugin.xml         # Plugin configuration
     ├── colorSchemes/CircomDefault.xml  # Custom colors
@@ -205,6 +230,175 @@ Registers all extension points:
     <additionalTextAttributes scheme="Default" file="colorSchemes/CircomDefault.xml"/>
 </extensions>
 ```
+
+## Navigation Features
+
+### 10. PSI Element Types
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/psi/CircomElementTypes.kt`
+
+Maps ANTLR parser rules to IntelliJ element types:
+
+```kotlin
+object CircomElementTypes {
+    val FILE = IFileElementType(CircomLanguage)
+    val TEMPLATE_DEFINITION: IElementType = ruleTypes[CircomParser.RULE_templateDefinition]
+    val FUNCTION_DEFINITION: IElementType = ruleTypes[CircomParser.RULE_functionDefinition]
+    val SIGNAL_DECLARATION: IElementType = ruleTypes[CircomParser.RULE_signalDeclaration]
+    val VARIABLE_DECLARATION: IElementType = ruleTypes[CircomParser.RULE_varDeclaration]
+    val COMPONENT_DECLARATION: IElementType = ruleTypes[CircomParser.RULE_componentDeclaration]
+    val INCLUDE_STATEMENT: IElementType = ruleTypes[CircomParser.RULE_includeStatement]
+}
+```
+
+### 11. Parser Definition
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/psi/CircomParserDefinition.kt`
+
+Creates PSI elements from AST nodes:
+
+```kotlin
+class CircomParserDefinition : ParserDefinition {
+    override fun createElement(node: ASTNode): PsiElement {
+        return when (node.elementType) {
+            CircomElementTypes.TEMPLATE_DEFINITION -> CircomTemplateDefinitionImpl(node)
+            CircomElementTypes.FUNCTION_DEFINITION -> CircomFunctionDefinitionImpl(node)
+            CircomElementTypes.SIGNAL_DECLARATION -> CircomSignalDeclarationImpl(node)
+            CircomElementTypes.VARIABLE_DECLARATION -> CircomVariableDeclarationImpl(node)
+            CircomElementTypes.COMPONENT_DECLARATION -> CircomComponentDeclarationImpl(node)
+            CircomElementTypes.INCLUDE_STATEMENT -> CircomIncludeStatementImpl(node)
+            else -> ANTLRPsiNode(node)
+        }
+    }
+}
+```
+
+### 12. Named Elements
+
+**Interface:** `CircomNamedElement`
+
+```kotlin
+interface CircomNamedElement : PsiNameIdentifierOwner, NavigatablePsiElement
+```
+
+**Base Implementation:** `CircomNamedElementImpl`
+
+All named elements (templates, functions, signals, variables, components) extend this base class which provides:
+- `getName()` / `setName()` - Name manipulation for refactoring
+- `getNameIdentifier()` - Returns the ID token for navigation
+
+### 13. Reference System
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/reference/CircomReference.kt`
+
+Resolves identifier references to their declarations:
+
+```kotlin
+class CircomReference(element: PsiElement, textRange: TextRange) :
+    PsiReferenceBase<PsiElement>, PsiPolyVariantReference {
+
+    override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
+        // 1. Search local scope (same file - templates, functions)
+        // 2. Search containing block (signals, variables, components)
+        // 3. Fall back to project-wide index search
+    }
+}
+```
+
+**Resolution order:**
+1. Local file templates and functions
+2. Local declarations in containing template/function
+3. Project-wide index lookup
+
+### 14. Project-Wide Symbol Index
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/stubs/CircomNameIndex.kt`
+
+Uses `FileTypeIndex` to find all Circom files and extract symbols:
+
+```kotlin
+object CircomNameIndex {
+    fun findAllTemplates(project: Project): List<CircomTemplateDefinitionImpl>
+    fun findAllFunctions(project: Project): List<CircomFunctionDefinitionImpl>
+    fun findTemplates(project: Project, name: String): List<CircomTemplateDefinitionImpl>
+    fun findFunctions(project: Project, name: String): List<CircomFunctionDefinitionImpl>
+}
+```
+
+### 15. Find Usages Provider
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomFindUsagesProvider.kt`
+
+Enables Find Usages (Alt+F7):
+
+```kotlin
+class CircomFindUsagesProvider : FindUsagesProvider {
+    override fun canFindUsagesFor(element: PsiElement) = element is CircomNamedElement
+
+    override fun getType(element: PsiElement): String {
+        return when (element) {
+            is CircomTemplateDefinitionImpl -> "template"
+            is CircomFunctionDefinitionImpl -> "function"
+            is CircomSignalDeclarationImpl -> "signal"
+            is CircomVariableDeclarationImpl -> "variable"
+            is CircomComponentDeclarationImpl -> "component"
+            else -> "element"
+        }
+    }
+}
+```
+
+### 16. Go to Symbol
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomChooseByNameContributor.kt`
+
+Enables Go to Symbol (Cmd+O / Ctrl+N):
+
+```kotlin
+class CircomChooseByNameContributor : ChooseByNameContributor {
+    override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
+        // Returns all template and function names in the project
+    }
+}
+```
+
+### 17. Structure View
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/ide/CircomStructureViewFactory.kt`
+
+Displays file structure in the Structure panel:
+
+```
+File.circom
+├── template TemplateA
+│   ├── input signalA
+│   ├── output signalB
+│   └── component comp1
+├── template TemplateB
+│   └── var x
+└── function helperFunc
+    └── var result
+```
+
+### 18. Refactoring Support
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/refactoring/CircomRefactoringSupportProvider.kt`
+
+Enables in-place rename refactoring (Shift+F6):
+
+```kotlin
+class CircomRefactoringSupportProvider : RefactoringSupportProvider() {
+    override fun isMemberInplaceRenameAvailable(element: PsiElement, context: PsiElement?) =
+        element is CircomNamedElement
+}
+```
+
+**File:** `src/main/kotlin/com/ohaddahan/circom/refactoring/CircomNamesValidator.kt`
+
+Validates Circom identifiers:
+- Must start with letter, `_`, or `$`
+- Can contain letters, digits, `_`, or `$`
+- Cannot be a keyword
 
 ## Build System
 

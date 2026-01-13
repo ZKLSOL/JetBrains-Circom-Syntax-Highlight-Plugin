@@ -35,5 +35,32 @@
         <!-- Commenting -->
         <lang.commenter language="Circom"
                         implementationClass="com.ohaddahan.circom.ide.CircomCommenter"/>
+
+        <!-- Parser Definition -->
+        <lang.parserDefinition language="Circom"
+                               implementationClass="com.ohaddahan.circom.psi.CircomParserDefinition"/>
+
+        <!-- Find Usages -->
+        <lang.findUsagesProvider language="Circom"
+                                 implementationClass="com.ohaddahan.circom.ide.CircomFindUsagesProvider"/>
+
+        <!-- Go to Symbol -->
+        <gotoSymbolContributor
+                implementation="com.ohaddahan.circom.ide.CircomChooseByNameContributor"/>
+
+        <!-- Structure View -->
+        <lang.psiStructureViewFactory language="Circom"
+                                      implementationClass="com.ohaddahan.circom.ide.CircomStructureViewFactory"/>
+
+        <!-- References -->
+        <psi.referenceContributor
+                                  implementation="com.ohaddahan.circom.reference.CircomReferenceContributor"/>
+
+        <!-- Refactoring -->
+        <lang.refactoringSupport language="Circom"
+                                 implementationClass="com.ohaddahan.circom.refactoring.CircomRefactoringSupportProvider"/>
+
+        <lang.namesValidator language="Circom"
+                             implementationClass="com.ohaddahan.circom.refactoring.CircomNamesValidator"/>
     </extensions>
 </idea-plugin>
