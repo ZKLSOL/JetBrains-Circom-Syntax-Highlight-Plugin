@@ -16,9 +16,13 @@ class CircomLexerAdaptor(lexer: CircomLexer) : ANTLRLexerAdaptor(CircomLanguage,
 
         @JvmStatic
         fun initializeElementTypeFactory() {
+            val vocabulary = CircomLexer.VOCABULARY
+            val tokenNames = Array(vocabulary.maxTokenType + 1) { i ->
+                vocabulary.getSymbolicName(i) ?: vocabulary.getLiteralName(i) ?: "<INVALID>"
+            }
             PSIElementTypeFactory.defineLanguageIElementTypes(
                 CircomLanguage,
-                CircomLexer.tokenNames,
+                tokenNames,
                 CircomParser.ruleNames
             )
         }

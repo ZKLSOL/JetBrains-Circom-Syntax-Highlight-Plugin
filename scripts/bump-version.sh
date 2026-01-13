@@ -3,7 +3,9 @@ set -e
 
 # Usage: ./scripts/bump-version.sh [major|minor|patch] or ./scripts/bump-version.sh <version>
 
-PROPERTIES_FILE="gradle.properties"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+PROPERTIES_FILE="$PROJECT_DIR/gradle.properties"
 
 # Get current version
 CURRENT_VERSION=$(grep "^pluginVersion" "$PROPERTIES_FILE" | cut -d'=' -f2 | tr -d ' ')
@@ -46,12 +48,10 @@ esac
 
 echo "New version: $NEW_VERSION"
 
-# Update gradle.properties
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i '' "s/^pluginVersion = .*/pluginVersion = $NEW_VERSION/" "$PROPERTIES_FILE"
-else
-    sed -i "s/^pluginVersion = .*/pluginVersion = $NEW_VERSION/" "$PROPERTIES_FILE"
-fi
+# Update gradle.properties using temp file (works on both macOS and Linux)
+TEMP_FILE=$(mktemp)
+sed "s/^pluginVersion = .*/pluginVersion = $NEW_VERSION/" "$PROPERTIES_FILE" > "$TEMP_FILE"
+mv "$TEMP_FILE" "$PROPERTIES_FILE"
 
 echo ""
 echo "Version bumped from $CURRENT_VERSION to $NEW_VERSION"

@@ -21,9 +21,13 @@ object CircomTokenTypes {
     fun initializeElementTypeFactory() {
         if (initialized) return
         initialized = true
+        val vocabulary = CircomLexer.VOCABULARY
+        val tokenNames = Array(vocabulary.maxTokenType + 1) { i ->
+            vocabulary.getSymbolicName(i) ?: vocabulary.getLiteralName(i) ?: "<INVALID>"
+        }
         PSIElementTypeFactory.defineLanguageIElementTypes(
             CircomLanguage,
-            CircomLexer.tokenNames,
+            tokenNames,
             CircomParser.ruleNames
         )
     }
