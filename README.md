@@ -1,6 +1,9 @@
+# [Extended Docs](https://circom-plugin-docs.turbine.cash/introduction)
+# [JetBrains Plugin Page](https://plugins.jetbrains.com/plugin/29751-circom-language-support)
+
 # Circom Language Support
 
-![Build](https://github.com/ZKLSOL/JetBrains-Circom-Syntax-Highlight-Plugin/workflows/Build/badge.svg)
+![Build](https://github.com/turbine-cash/JetBrains-Circom-Syntax-Highlight-Plugin/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 
@@ -44,7 +47,7 @@ Supports all JetBrains IDEs: IntelliJ IDEA, WebStorm, PyCharm, RustRover, and mo
 
 ### Manual Installation
 
-1. Download the latest release from [GitHub Releases](https://github.com/ZKLSOL/JetBrains-Circom-Syntax-Highlight-Plugin/releases/latest)
+1. Download the latest release from [GitHub Releases](https://github.com/turbine-cash/JetBrains-Circom-Syntax-Highlight-Plugin/releases/latest)
 2. Open your JetBrains IDE
 3. Go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 4. Select the downloaded ZIP file
@@ -78,7 +81,7 @@ You can customize all colors via <kbd>Settings</kbd> > <kbd>Editor</kbd> > <kbd>
 
 ```bash
 # Clone the repository
-git clone https://github.com/ZKLSOL/JetBrains-Circom-Syntax-Highlight-Plugin.git
+git clone https://github.com/turbine-cash/JetBrains-Circom-Syntax-Highlight-Plugin.git
 cd circom-language-support
 
 # Build the plugin
